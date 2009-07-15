@@ -1,0 +1,48 @@
+#container {
+  
+}
+
+#header {
+  
+}
+
+#content {
+  
+}
+
+#footer {
+  
+}
+
+
+/**
+ * Utils
+ */
+
+.notice {
+  font-weight: bold;
+  color: red;
+}
+
+.button {
+  color: #fff;
+  float: left;
+  display: block;
+  margin-right: 10px;
+  padding: .2em 1em;
+  background: #18b;
+  -moz-border-radius: 3px;
+  -webkit-border-radius: 3px;
+}
+.button:hover {
+  background: #4ad;
+}
+
+.clearfix:after {
+  content: ".";
+  display: block;
+  clear: both;
+  visibility: hidden;
+  line-height: 0;
+  height: 0;
+}

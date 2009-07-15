@@ -1,0 +1,134 @@
+/**********
+ COMMON
+***********/
+img {
+  border: none;
+}
+a,
+a:visited {
+  font-weight: bold;
+  color: #0689d0;
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: underline;
+}
+.clearfix:after {
+  content: ".";
+  display: block;
+  clear: both;
+  visibility: hidden;
+  line-height: 0;
+  height: 0;
+}
+#content {
+  margin: 10px;
+  font-size: 90%;
+}
+#content.canvas {
+  margin: 10px 25px;
+}
+#menu {
+  float: right;
+}
+#menu a {
+  font-size: 110%;
+  padding: 6px 0 10px 27px;
+  margin-top: 100px;
+}
+.share_this {
+  margin-right: 10px;
+  background: url(http://matake.jp/gadgets/smartfm/images/share_this.png) no-repeat;
+}
+.home {
+  background: url(http://matake.jp/gadgets/smartfm/images/home.png) no-repeat;
+}
+.powered_by {
+  text-align: right;
+  clear: both;
+}
+.icon {
+  float: left;
+  margin-right: 10px;
+  border: 1px solid #ccc;
+}
+.description {
+  margin: 10px 0;
+}
+
+
+/**********
+ USER
+***********/
+.user .name {
+  padding-top: 1em;
+}
+.user .description {
+  margin-bottom: 4em;
+}
+.user .description img {
+  float: right;
+  margin: 0 0 10px 1em;
+}
+
+
+/**********
+ LISTS
+***********/
+.list {
+  margin: 25px 0;
+}
+.list .title {
+  margin: 5px;
+}
+.list h3.title {
+  margin: 7px 0;
+  font-size: 100%;
+}
+.list .launchers {
+  margin-top: 3px;
+}
+.list .description {
+  padding: 10px;
+  border: 1px solid #b5d8df;
+  background: #eef9ff;
+}
+.list .launchers {
+  float: left;
+  width: 165px;
+}
+.canvas .list .launchers {
+  margin-top: 9px;
+}
+
+/**********
+ LAUNCHERS
+***********/
+.launch_button,
+.launch_button_disable {
+  float: left;
+  display: block;
+  width: 38px;
+  height: 38px;
+  margin: 3px 8px;
+  overflow: hidden;
+  text-decoration: none;
+}
+.launch_button {
+  background: url('http://smart.fm/images/sprites/app_buttons.gif') no-repeat;
+}
+.dictation_launcher {
+  background-position: 0 -100px;
+}
+.brainspeed_launcher {
+  background-position: 0 -299px;
+}
+.iknow_launcher:hover {
+  background-position: 0 -50px;
+}
+.dictation_launcher:hover {
+  background-position: 0 -150px;
+}
+.brainspeed_launcher:hover {
+  background-position: 0 -349px;
+}

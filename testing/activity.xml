@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Module>
+  <ModulePrefs title="smart.fm activities"
+               description="smart.fm gadget for OpenSocial containers"
+               author_email="nov@matake.jp"
+               thumbnail="http://matake.jp/smartfm/images/thumbnail.png"
+               screenshot="http://matake.jp/smartfm/images/screenshot.png"
+               singleton="true">
+    <Require feature="opensocial-0.8" />
+    <!-- doesn't work...
+      <Require feature="osapi" />
+    -->
+    <Require feature="views" />
+    <Require feature="dynamic-height" />
+    <Require feature="opensocial-data" />
+    <Require feature="opensocial-templates">
+      <Param name="process-on-server">true</Param>
+    </Require>
+    <Optional feature="content-rewrite">
+      <Param name="exclude-url">.js</Param><!-- this doesn't work on shindig because of shindig's bug -->
+      <Param name="exclude-urls">.js</Param>
+    </Optional>
+    <Icon>http://smart.fm/favicon.ico</Icon>
+  </ModulePrefs>
+  <Content type="html" view="profile,home,canvas,preview">
+    <![CDATA[
+      <script type="text/javascript" src="http://blog.matake.jp/javascripts/jquery.js"></script>
+    ]]>
+  </Content>
+  <Content type="html" view="profile,home">
+    <![CDATA[
+      <link rel="stylesheet" type="text/css" href="http://matake.jp/testing_gadgets/stylesheets/base.css" />
+      <div id="view_links"></div>
+      <script type="text/javascript">
+        var views = gadgets.views.getSupportedViews();
+        var current = gadgets.views.getCurrentView();
+        for (var viewname in views) {
+          var view = views[viewname];
+          $('<div class="view_link" />')
+          .append($('<a class="button" href="#" onclick="gadgets.views.requestNavigateTo(\'' + view.getName() + '\');" />').append(viewname))
+          .appendTo('#view_links');
+        }
+      </script>
+    ]]>
+  </Content>
+  <Content type="html" view="canvas,preview">
+    <![CDATA[
+      <script type="text/javascript" src="http://matake.jp/testing_gadgets/javascripts/opt_params.js"></script>
+      <script type="text/javascript" src="http://matake.jp/testing_gadgets/javascripts/v0.8/idspec.js"></script>
+      <script type="text/javascript" src="http://matake.jp/testing_gadgets/javascripts/v0.9/idspec.js"></script>
+      <script type="text/javascript" src="http://matake.jp/testing_gadgets/javascripts/rest/idspec.js"></script>
+      <script type="text/javascript" src="http://matake.jp/testing_gadgets/javascripts/v0.8/activity.js"></script>
+      <script type="text/javascript" src="http://matake.jp/testing_gadgets/javascripts/v0.9/activity.js"></script>
+      <script type="text/javascript" src="http://matake.jp/testing_gadgets/javascripts/rest/activity.js"></script>
+      <script type="text/javascript">
+        gadgets.util.registerOnLoadHandler(gadgets.window.adjustHeight);
+      </script>
+      <div id="container">
+        <div id="header">
+          <h2>Activity gadget</h2>
+        </div>
+        <div id="content">
+          <h3>List</h3>
+          <dl>
+            <dt>OpenSocial v0.8</dt>
+            <dd><a href="#" onclick="os8.activity.list(os8.idspec.owner, this); return false">OWNER</a></dd>
+            <dd><a href="#" onclick="os8.activity.list(os8.idspec.owner_friends, this); return false">OWNER_FRIENDS</a></dd>
+            <dd><a href="#" onclick="os8.activity.list(os8.idspec.viewer, this); return false">VIEWER</a></dd>
+            <dd><a href="#" onclick="os8.activity.list(os8.idspec.viewer_friends, this); return false">VIEWER_FRIENDS</a></dd>
+            <dt>OpenSocial v0.9</dt>
+            <dd><a href="#" onclick="os9.activity.list(os9.idspec.owner, this); return false">OWNER</a></dd>
+            <dd><a href="#" onclick="os9.activity.list(os9.idspec.owner_friends), this">OWNER_FRIENDS</a></dd>
+            <dd><a href="#" onclick="os9.activity.list(os9.idspec.viewer, this); return false">VIEWER</a></dd>
+            <dd><a href="#" onclick="os9.activity.list(os9.idspec.viewer_friends, this); return false">VIEWER_FRIENDS</a></dd>
+            <dt>RESTful API</dt>
+            <dd><a href="#" onclick="rest.activity.list(rest.idspec.owner, this); return false">OWNER</a></dd>
+            <dd><a href="#" onclick="rest.activity.list(rest.idspec.owner_friends, this); return false">OWNER_FRIENDS</a></dd>
+            <dd><a href="#" onclick="rest.activity.list(rest.idspec.viewer, this); return false">VIEWER</a></dd>
+            <dd><a href="#" onclick="rest.activity.list(rest.idspec.viewer_friends, this); return false">VIEWER_FRIENDS</a></dd>
+          </dl>
+          <h3>Create</h3>
+          <dl>
+            <dt>OpenSocial v0.8</dt>
+            <dd><a href="#" onclick="os8.activity.create('v8 sample activity', 'this is a sample activity via open social v0.8 js api', null, this); return false">create</a></dd>
+            <dt>OpenSocial v0.9</dt>
+            <dd><a href="#" onclick="os9.activity.create('v9 sample activity', 'this is a sample activity via open social v0.9 js api', null, this); return false">create</a></dd>
+          </dl>
+          <h3>Pipeline</h3>
+          <script xmlns:os="http://ns.opensocial.org/2008/markup" type="text/os-data">
+            <os:ActivitiesRequest key="owner" userId="@owner" groupId="@self"/>
+            <os:ActivitiesRequest key="owner_friends" userId="@owner" groupId="@friends"/>
+            <os:ActivitiesRequest key="viewer" userId="@viewer" groupId="@self"/>
+            <os:ActivitiesRequest key="viewer_friends" userId="@viewer" groupId="@friends"/>
+          </script>
+          <script type="text/javascript">
+            var context = opensocial.data.getDataContext();
+            console.info(context.getDataSet("owner"))
+          </script>
+          <script type="text/os-template">
+            <dl>
+              <dt>Owner</dt>
+              <dd repeat="${owner}"><span id="id${Context.Index}">${Cur.userId} :: ${Cur.title}</span></dd>
+              <dt>Owner Friends</dt>
+              <dd repeat="${owner_friends}"><span id="id${Context.Index}">${Cur.userId} :: ${Cur.title}</span></dd>
+              <dt>Viewer</dt>
+              <dd repeat="${viewer}"><span id="id${Context.Index}">${Cur.userId} :: ${Cur.title}</span></dd>
+              <dt>Viewer Friends</dt>
+              <dd repeat="${viewer_friends}"><span id="id${Context.Index}">${Cur.userId} :: ${Cur.title}</span></dd>
+            </dl>
+         </script>
+        </div>
+        <div id="footer">
+          <p>Copyright 2009, nov.</p>
+        </div>
+      </div>
+    ]]>
+  </Content>
+</Module>

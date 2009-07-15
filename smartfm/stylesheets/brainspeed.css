@@ -1,0 +1,119 @@
+/**********
+ COMMON
+***********/
+img {
+  border: none;
+}
+a,
+a:visited {
+  font-weight: bold;
+  color: #0689d0;
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: underline;
+}
+.clearfix:after {
+  content: ".";
+  display: block;
+  clear: both;
+  visibility: hidden;
+  line-height: 0;
+  height: 0;
+}
+#content {
+  margin: 10px;
+  font-size: 90%;
+  color: #444;
+}
+#content.canvas {
+  margin: 10px 25px;
+}
+#menu {
+  float: right;
+}
+#menu a {
+  font-size: 110%;
+  padding: 6px 0 10px 27px;
+  margin-top: 100px;
+}
+.share_this {
+  margin-right: 10px;
+  background: url(http://matake.jp/gadgets/smartfm/images/share_this.png) no-repeat;
+}
+.powered_by {
+  text-align: right;
+  clear: both;
+}
+dl, dt, dd {
+  margin: 0;
+  padding: 0;
+}
+
+
+/**********
+ BADGES
+***********/
+.badge {
+  float: left;
+  width: 180px;
+  margin-bottom: 1.5em;
+}
+.badge .user {
+  font-weight: bold;
+}
+.badge .result.win {
+  color: green;
+}
+.badge .result.lose {
+  color: red;
+}
+.badge .brainspeed {
+  text-align: center;
+  margin: 0 10px;
+  padding: 0 10px;
+  display: block;
+}
+.badge .brainspeed .metric {
+  float: left;
+  margin: 10px 10px 0 0;
+}
+.badge .brainspeed .score {
+  margin: 0;
+  font-size: 1.9em;
+  font-weight: bold;
+  line-height: 1;
+}
+.badge .brainspeed .caption {
+  font-size: .8em;
+}
+
+
+/**********
+ LAUNCHERS
+***********/
+
+.launcher {
+  float: left;
+  margin: 2px;
+  border: 1px solid #999;
+}
+.launch_button,
+.launch_button_disable {
+  float: left;
+  display: block;
+  width: 38px;
+  height: 38px;
+  margin: 3px 8px;
+  overflow: hidden;
+  text-decoration: none;
+}
+.launch_button {
+  background: url('http://smart.fm/images/sprites/app_buttons.gif') no-repeat;
+}
+.brainspeed_launcher {
+  background-position: 0 -299px;
+}
+.brainspeed_launcher:hover {
+  background-position: 0 -349px;
+}

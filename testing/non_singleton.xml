@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Module>
+  <ModulePrefs title="smart.fm non singleton"
+               description="smart.fm gadget for OpenSocial containers"
+               author_email="nov@matake.jp"
+               thumbnail="http://matake.jp/smartfm/images/thumbnail.png"
+               screenshot="http://matake.jp/smartfm/images/screenshot.png"
+               singleton="false">
+    <Require feature="opensocial-0.8" />
+    <Require feature="dynamic-height" />
+    <Icon>http://smart.fm/favicon.ico</Icon>
+  </ModulePrefs>
+  <Content type="html" view="profile,home,canvas,preview">
+    <![CDATA[
+      <div id="container">
+        <div id="header">
+          <h2>Non singleton gadget</h2>
+        </div>
+        <div id="content">
+          <p>This gadget can be installed twice or more.
+        </div>
+        <div id="footer">
+          <p>Copyright 2009, nov.</p>
+        </div>
+      </div>
+    ]]>
+  </Content>
+</Module>

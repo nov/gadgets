@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Module>
+  <ModulePrefs title="smart.fm people"
+               description="smart.fm gadget for OpenSocial containers"
+               author_email="nov@matake.jp"
+               thumbnail="http://matake.jp/smartfm/images/thumbnail.png"
+               screenshot="http://matake.jp/smartfm/images/screenshot.png"
+               singleton="true">
+    <Require feature="opensocial-0.8" />
+    <!-- doesn't work...
+      <Require feature="osapi" />
+    -->
+    <Require feature="views" />
+    <Require feature="dynamic-height" />
+    <Require feature="opensocial-data" />
+    <Require feature="opensocial-templates">
+      <Param name="process-on-server">true</Param>
+    </Require>
+    <Optional feature="content-rewrite">
+      <Param name="exclude-url">.js</Param><!-- this doesn't work on shindig because of shindig's bug -->
+      <Param name="exclude-urls">.js</Param>
+    </Optional>
+    <Icon>http://smart.fm/favicon.ico</Icon>
+  </ModulePrefs>
+  <Content type="html" view="profile,home,canvas,preview">
+    <![CDATA[
+      <script type="text/javascript" src="http://blog.matake.jp/javascripts/jquery.js"></script>
+    ]]>
+  </Content>
+  <Content type="html" view="profile,home">
+    <![CDATA[
+      <link rel="stylesheet" type="text/css" href="http://matake.jp/testing_gadgets/stylesheets/base.css" />
+      <div id="view_links"></div>
+      <script type="text/javascript">
+        var views = gadgets.views.getSupportedViews();
+        var current = gadgets.views.getCurrentView();
+        for (var viewname in views) {
+          var view = views[viewname];
+          $('<div class="view_link" />')
+          .append($('<a class="button" href="#" onclick="gadgets.views.requestNavigateTo(view);" />').append(viewname))
+          .appendTo('#view_links');
+        }
+      </script>
+    ]]>
+  </Content>
+  <Content type="html" view="canvas,preview">
+    <![CDATA[
+      <script type="text/javascript" src="http://matake.jp/testing_gadgets/javascripts/opt_params.js"></script>
+      <script type="text/javascript" src="http://matake.jp/testing_gadgets/javascripts/v0.8/idspec.js"></script>
+      <script type="text/javascript" src="http://matake.jp/testing_gadgets/javascripts/v0.9/idspec.js"></script>
+      <script type="text/javascript" src="http://matake.jp/testing_gadgets/javascripts/rest/idspec.js"></script>
+      <script type="text/javascript" src="http://matake.jp/testing_gadgets/javascripts/v0.8/people.js"></script>
+      <script type="text/javascript" src="http://matake.jp/testing_gadgets/javascripts/v0.9/people.js"></script>
+      <script type="text/javascript" src="http://matake.jp/testing_gadgets/javascripts/rest/people.js"></script>
+      <script type="text/javascript">
+        gadgets.util.registerOnLoadHandler(gadgets.window.adjustHeight);
+      </script>
+      <div id="container">
+        <div id="header">
+          <h2>People gadget</h2>
+        </div>
+        <div id="content">
+          <h3>List</h3>
+          <dl>
+            <dt>OptParams</dt>
+            <dd>
+              <dl>
+                <dt>Filter</dt>
+                <dd>
+                  <form>
+                    <input type="radio" id="filter_all" name="filter" onclick="opt_params_generator.filter.all()" checked />
+                    <label for="filter_all">ALL</label>
+                    <input type="radio" id="filter_hasApp" name="filter" onclick="opt_params_generator.filter.hasApp()" />
+                    <label for="filter_hasApp">HAS_APP</label>
+                    <input type="radio" id="filter_topFriends" name="filter" onclick="opt_params_generator.filter.topFriends()" />
+                    <label for="filter_topFriends">TOP_FRIENDS</label>
+                    <input type="radio" id="filter_isFriendWidth" name="filter" onclick="opt_params_generator.filter.isFriendWidth()" />
+                    <label for="filter_isFriendWidth">IS_FRIENDS_WITH</label>
+                  </form>
+                </dd>
+                <dt>SortOrder</dt>
+                <dd>
+                  <form>
+                    <input type="radio" id="sort_order_topFriends" name="sort_order" onclick="opt_params_generator.sort_order.topFriends()" checked />
+                    <label for="sort_order_topFriends">TOP_FRIENDS</label>
+                    <input type="radio" id="sort_order_name" name="sort_order" onclick="opt_params_generator.sort_order.name()" />
+                    <label for="sort_order_name">NAME</label>
+                  </form>
+                </dd>
+                <dt>AppData</dt>
+                <dd>
+                  <form>
+                    <input type="text" id="app_data" onblur="opt_params_generator.app_data(this.value)" />
+                  </form>
+                </dd>
+                <dt>ProfileDetails</dt>
+                <dd>
+                  <form>
+                    <input type="checkbox" id="profile_details_aboutMe" onclick="opt_params_generator.profile_details.aboutMe(this.checked)" />
+                    <label for="profile_details_aboutMe">ABOUT_ME</label>
+                    <input type="checkbox" id="profile_details_age" onclick="opt_params_generator.profile_details.age(this.checked)" />
+                    <label for="profile_details_age">AGE</label>
+                    <input type="checkbox" id="profile_details_dateOfBirth" onclick="opt_params_generator.profile_details.dateOfBirth(this.checked)" />
+                    <label for="profile_details_dateOfBirth">DATE_OF_BIRTH</label>
+                    <input type="checkbox" id="profile_details_gender" onclick="opt_params_generator.profile_details.gender(this.checked)" />
+                    <label for="profile_details_gender">GENDER</label>
+                    <br />
+                    <input type="checkbox" id="profile_details_jobs" onclick="opt_params_generator.profile_details.jobs(this.checked)" />
+                    <label for="profile_details_jobs">JOBS</label>
+                    <input type="checkbox" id="profile_details_languagesSpoken" onclick="opt_params_generator.profile_details.languagesSpoken(this.checked)" />
+                    <label for="profile_details_languagesSpoken">LANGUAGES_SPOKEN</label>
+                    <input type="checkbox" id="profile_details_networkPresence" onclick="opt_params_generator.profile_details.networkPresence(this.checked)" />
+                    <label for="profile_details_networkPresence">NETWORK_PRESENCE</label>
+                    <input type="checkbox" id="profile_details_nickname" onclick="opt_params_generator.profile_details.nickname(this.checked)" />
+                    <label for="profile_details_nickname">NICKNAME</label>
+                    <br />
+                    <input type="checkbox" id="profile_details_profileUrl" onclick="opt_params_generator.profile_details.profileUrl(this.checked)" />
+                    <label for="profile_details_profileUrl">PROFILE_URL</label>
+                    <input type="checkbox" id="profile_details_status" onclick="opt_params_generator.profile_details.status(this.checked)" />
+                    <label for="profile_details_status">STATUS</label>
+                    <input type="checkbox" id="profile_details_timeZone" onclick="opt_params_generator.profile_details.timeZone(this.checked)" />
+                    <label for="profile_details_timeZone">TIME_ZONE</label>
+                    <input type="checkbox" id="profile_details_urls" onclick="opt_params_generator.profile_details.urls(this.checked)" />
+                    <label for="profile_details_urls">URLS</label>
+                  </form>
+                </dd>
+              </dl>
+            </dd>
+          </dl>
+          <dl>
+            <dt>OpenSocial v0.8</dt>
+            <dd><a href="#" onclick="os8.people.list(os8.idspec.owner, this); return false">OWNER</a></dd>
+            <dd><a href="#" onclick="os8.people.list(os8.idspec.owner_friends, this); return false">OWNER_FRIENDS</a></dd>
+            <dd><a href="#" onclick="os8.people.list(os8.idspec.viewer, this); return false">VIEWER</a></dd>
+            <dd><a href="#" onclick="os8.people.list(os8.idspec.viewer_friends, this); return false">VIEWER_FRIENDS</a></dd>
+            <dt>OpenSocial v0.9</dt>
+            <dd><a href="#" onclick="os9.people.list(os9.idspec.owner, this); return false">OWNER</a></dd>
+            <dd><a href="#" onclick="os9.people.list(os9.idspec.owner_friends, this); return false">OWNER_FRIENDS</a></dd>
+            <dd><a href="#" onclick="os9.people.list(os9.idspec.viewer, this); return false">VIEWER</a></dd>
+            <dd><a href="#" onclick="os9.people.list(os9.idspec.viewer_friends, this); return false">VIEWER_FRIENDS</a></dd>
+            <dt>RESTful API</dt>
+            <dd><a href="#" onclick="rest.people.list(rest.idspec.owner, this); return false">OWNER</a></dd>
+            <dd><a href="#" onclick="rest.people.list(rest.idspec.owner_friends, this); return false">OWNER_FRIENDS</a></dd>
+            <dd><a href="#" onclick="rest.people.list(rest.idspec.viewer, this); return false">VIEWER</a></dd>
+            <dd><a href="#" onclick="rest.people.list(rest.idspec.viewer_friends, this); return false">VIEWER_FRIENDS</a></dd>
+          </dl>
+          <h3>Pipeline</h3>
+          <script xmlns:os="http://ns.opensocial.org/2008/markup" type="text/os-data">
+            <os:OwnerRequest key="owner" />
+            <os:PeopleRequest key="owner_friends" userId="@owner" groupId="@friends"/>
+            <os:ViewerRequest key="viewer" />
+            <os:PeopleRequest key="viewer_friends" userId="@viewer" groupId="@friends"/>
+          </script>
+          <script type="text/javascript">
+            var context = opensocial.data.getDataContext();
+            console.info(context.getDataSet("owner_friends"))
+          </script>
+          <script type="text/os-template">
+          <script type="text/os-template">
+            <dl>
+              <dt>Owner</dt>
+              <dd repeat="${owner}"><span id="id${Context.Index}">${Cur.id} :: ${Cur.name.formatted}</span></dd>
+              <dt>Owner Friends</dt>
+              <dd repeat="${owner_friends}"><span id="id${Context.Index}">${Cur.id} :: ${Cur.name.formatted}</span></dd>
+              <dt>Viewer</dt>
+              <dd repeat="${viewer}"><span id="id${Context.Index}">${Cur.id} :: ${Cur.name.formatted}</span></dd>
+              <dt>Viewer Friends</dt>
+              <dd repeat="${viewer_friends}"><span id="id${Context.Index}">${Cur.id} :: ${Cur.name.formatted}</span></dd>
+            </dl>
+         </script>
+        </div>
+        <div id="footer">
+          <p>Copyright 2009, nov.</p>
+        </div>
+      </div>
+    ]]>
+  </Content>
+</Module>

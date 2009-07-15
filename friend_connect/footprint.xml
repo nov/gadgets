@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Module>
+  <ModulePrefs title="Footprints" description="This gadget is re-designed and edited by nov. Original one is developed by agektmr. (see more details: http://devlog.agektmr.com/en/archives/325)" author="agektmr and nov" author_email="matake@gmail.com" height="30">
+    <Require feature="opensocial-0.8" />
+    <Require feature="friendconnect" />
+    <Locale>
+      <msg name="days_ago">days ago</msg>
+      <msg name="hours_ago">hours ago</msg>
+      <msg name="mins_ago">minutes ago</msg>
+      <msg name="secs_ago">seconds ago</msg>
+    </Locale>
+  </ModulePrefs>
+  <Content type="html" view="default">
+    <![CDATA[
+    <style type="text/css">
+      body {
+        background: #000;
+      }
+      ul, li {
+        margin: 0 3px 0 0;
+        padding: 0;
+        display: inline;
+        list-style-type: none;
+      }
+      img {
+        width: 20px;
+        height: 20px;
+        border: 1px solid #ccc;
+      }
+    </style>
+    <script type="text/javascript" src="http://blog.matake.jp/javascripts/jquery.js"></script>
+    <script type="text/javascript">
+      var fp = {
+        viewer: null,
+        footprints: [],
+        config: {
+          maxDisplay: 30
+        },
+        init: function() {
+          var req = opensocial.newDataRequest();
+          var params = {};
+          params[opensocial.DataRequest.PeopleRequestFields.PROFILE_DETAILS] = [opensocial.Person.Field.PROFILE_URL];
+          req.add(req.newFetchPersonRequest(opensocial.IdSpec.PersonId.VIEWER, params), 'viewer');
+          var idspec = opensocial.newIdSpec({
+            'userId':opensocial.IdSpec.PersonId.OWNER,
+            'groupId':opensocial.IdSpec.GroupId.FRIENDS
+          });
+          req.add(req.newFetchPersonAppDataRequest(idspec, 'footprint'), 'footprint');
+          req.send(function(response) {
+            if (!response.get('viewer').hadError()) {
+              fp.viewer = response.get('viewer').getData();
+            }
+            if (response.get('footprint').hadError()) {
+              fp.footprints = [];
+            } else {
+              var footprints = response.get('footprint').getData();
+              var exist = false;
+              $.each(footprints, function(footprint) {
+                var json = gadgets.util.unescapeString(this.footprint);
+                var foot = gadgets.json.parse(json);
+                if (fp.viewer !== null) {
+                  if (foot.id == fp.viewer.getId()) {
+                    exist = true;
+                    foot.id = fp.viewer.getId();
+                    foot.name = fp.viewer.getDisplayName(),
+                    foot.thumbnail = fp.viewer.getField(opensocial.Person.Field.THUMBNAIL_URL),
+                    foot.profile = fp.viewer.getField(opensocial.Person.Field.PROFILE_URL),
+                    foot.timestamp = (new Date()).getTime();
+                    fp.setFootprint(foot);
+                  }
+                }
+                fp.footprints.unshift(foot);
+              });
+              if (!exist && fp.viewer !== null) {
+                var foot = {
+                  'id'        : fp.viewer.getId(),
+                  'name'      : fp.viewer.getDisplayName(),
+                  'thumbnail' : fp.viewer.getField(opensocial.Person.Field.THUMBNAIL_URL),
+                  'profile'   : fp.viewer.getField(opensocial.Person.Field.PROFILE_URL),
+                  'timestamp' : (new Date()).getTime()
+                };
+                fp.footprints.unshift(foot);
+                fp.setFootprint(foot);
+              }
+              fp.footprints.sort(function(a, b) {
+                return b.timestamp - a.timestamp;
+              });
+              fp.showFootprints();
+            }
+          });
+        },
+        showFootprints:function() {
+          for (var i in fp.footprints) {
+            if (i == fp.config.maxDisplay) break;
+            var foot = fp.footprints[i];
+            var now = (new Date()).getTime();
+            var offset = now - foot.timestamp
+            var sec = Math.round(offset / 1000);
+            var timestamp = '';
+            while (1) {
+              var days = Math.floor(sec / 86400);
+              if (days != 0) {
+                timestamp = days+' __MSG_days_ago__';
+                break;
+              }
+              var hour = Math.floor(sec / 3600);
+              if (hour != 0) {
+                timestamp = hour+' __MSG_hours_ago__';
+                break;
+              }
+              var min = Math.floor(sec / 60);
+              if (min != 0) {
+                timestamp = min+' __MSG_mins_ago__';
+                break;
+              }
+              timestamp = sec+' __MSG_secs_ago__';
+              break;
+            }
+            var t = fp.template.footprint;
+            t = t.replace(/##name##/g, foot.name);
+            t = t.replace(/##thumbnail##/g, foot.thumbnail);
+            t = t.replace(/##profile##/g, foot.profile);
+            t = t.replace(/##timestamp##/g, timestamp);
+            $('#footprints').prepend(t);
+          };
+        },
+        setFootprint:function(foot) {
+          var str = gadgets.json.stringify(foot);
+          var req = opensocial.newDataRequest();
+          req.add(req.newUpdatePersonAppDataRequest(opensocial.IdSpec.PersonId.VIEWER, 'footprint', str));
+          req.send();
+        },
+        template:{
+          'footprint': '<li class="footprint"><a href="#" title="##name## (##timestamp##)" onclick="parent.location=\'##profile##\'"><img src="##thumbnail##" alc="##name##  (##timestamp##)" /></a></li>'
+        }
+      };
+    </script>
+    <script type="text/javascript">
+      gadgets.util.registerOnLoadHandler(fp.init);
+    </script>
+    <ul id="footprints"></ul>
+    ]]>
+  </Content>
+</Module>

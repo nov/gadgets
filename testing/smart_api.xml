@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Module>
+  <ModulePrefs title="smart.fm API"
+               description="smart.fm gadget for OpenSocial containers"
+               author_email="nov@matake.jp"
+               thumbnail="http://matake.jp/smartfm/images/thumbnail.png"
+               screenshot="http://matake.jp/smartfm/images/screenshot.png"
+               singleton="true">
+    <Require feature="opensocial-0.8" />
+    <!-- doesn't work...
+      <Require feature="osapi" />
+    -->
+    <Require feature="views" />
+    <Require feature="dynamic-height" />
+    <Require feature="opensocial-data" />
+    <Require feature="opensocial-templates">
+      <Param name="process-on-server">true</Param>
+    </Require>
+    <Optional feature="content-rewrite">
+      <Param name="exclude-url">.js</Param><!-- this doesn't work on shindig because of shindig's bug -->
+      <Param name="exclude-urls">.js</Param>
+    </Optional>
+    <OAuth>
+      <Service name="smart.fm">
+        <Request url="http://api.smart.fm/oauth/request_token" />
+        <Access url="http://api.smart.fm/oauth/access_token" />
+        <Authorization url="http://smart.fm/oauth/authorize" />
+      </Service>
+    </OAuth>
+    <Icon>http://smart.fm/favicon.ico</Icon>
+  </ModulePrefs>
+  <UserPref name="username" display_name="smart.fm username" datatype="string" required="true" />
+  <Content type="html" view="profile,home">
+    <![CDATA[
+      <link rel="stylesheet" type="text/css" href="http://matake.jp/testing_gadgets/stylesheets/base.css" />
+      <script type="text/javascript" src="http://blog.matake.jp/javascripts/jquery.js"></script>
+      <div id="view_links"></div>
+      <script type="text/javascript">
+        var views = gadgets.views.getSupportedViews();
+        var current = gadgets.views.getCurrentView();
+        for (var viewname in views) {
+          var view = views[viewname];
+          $('<div class="view_link" />')
+          .append($('<a class="button" href="#" onclick="gadgets.views.requestNavigateTo(view);" />').append(viewname))
+          .appendTo('#view_links');
+        }
+      </script>
+    ]]>
+  </Content>
+  <Content type="html" view="canvas,preview">
+    <![CDATA[
+      <script type="text/javascript" src="http://matake.jp/testing_gadgets/javascripts/smart_api.js"></script>
+      <script type="text/javascript">
+        gadgets.util.registerOnLoadHandler(gadgets.window.adjustHeight);
+        gadgets.util.registerOnLoadHandler(smart.api.sessions);
+      </script>
+      <div id="container">
+        <div id="header">
+          <h2>smart.fm API gadget</h2>
+        </div>
+        <div id="content">
+          <h3>makeRequest</h3>
+          <dl>
+            <dt>OAuth</dt>
+            <dd><a href="#" id="approved" style="display:none">approved</a></dd>
+            <dd><a href="#" id="approve" style="display:none">approve</a></dd>
+            <dd><a href="#" id="sessions" style="display:none">sessions API</a></dd>
+          <h3>Pipeline</h3>
+          <script xmlns:os="http://ns.opensocial.org/2008/markup" type="text/os-data">
+            <os:HttpRequest key="friends" href="http://api.smart.fm/users/__UP_username__/friends.json" />
+            <os:HttpRequest key="followers" href="http://api.smart.fm/users/__UP_username__/followers.json" />
+            <os:HttpRequest key="lists" href="http://api.smart.fm/users/__UP_username__/lists.json" />
+            <os:HttpRequest key="items" href="http://api.smart.fm/users/__UP_username__/items.json" />
+            <os:HttpRequest key="sentences" href="http://api.smart.fm/users/__UP_username__/sentences.json" />
+          </script>
+          <script type="text/javascript">
+            var context = opensocial.data.getDataContext();
+            console.info(context.getDataSet("sentences"));
+          </script>
+          <script type="text/os-template" require="friends">
+            <dl>
+              <dt>Friends</dt>
+              <dd repeat="${friends.content}"><span id="id${username}">${username} :: ${profile.name}</span></dd>
+              <dt>Followers</dt>
+              <dd repeat="${followers.content}"><span id="id${Context.Index}">${Cur.username} :: ${Cur.profile.name}</span></dd>
+              <dt>Lists</dt>
+              <dd repeat="${lists.content}"><span id="id${Context.Index}">${Cur.id} :: ${Cur.title}</span></dd>
+              <dt>Items</dt>
+              <dd repeat="${items.content}"><span id="id${Context.Index}">${Cur.id} :: ${Cur.cue.text}</span></dd>
+              <dt>Sentences</dt>
+              <dd repeat="${sentences.content}"><span id="id${Context.Index}">${Cur.id} :: ${Cur.text}</span></dd>
+            </dl>
+         </script>
+        </div>
+        <div id="footer">
+          <p>Copyright 2009, nov.</p>
+        </div>
+      </div>
+    ]]>
+  </Content>
+</Module>
