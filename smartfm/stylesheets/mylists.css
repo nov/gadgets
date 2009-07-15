@@ -38,10 +38,10 @@ a:hover {
 }
 .share_this {
   margin-right: 10px;
-  background: url(http://matake.jp/gadgets/smartfm/images/share_this.png) no-repeat;
+  background: url("http://matake.jp/gadgets/smartfm/images/share_this.png") no-repeat;
 }
 .home {
-  background: url(http://matake.jp/gadgets/smartfm/images/home.png) no-repeat;
+  background: url("http://matake.jp/gadgets/smartfm/images/home.png") no-repeat;
 }
 .powered_by {
   text-align: right;
@@ -115,7 +115,7 @@ a:hover {
   text-decoration: none;
 }
 .launch_button {
-  background: url('http://smart.fm/images/sprites/app_buttons.gif') no-repeat;
+  background: url("http://smart.fm/images/sprites/app_buttons.gif") no-repeat;
 }
 .dictation_launcher {
   background-position: 0 -100px;
