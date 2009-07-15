@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Module>
   <ModulePrefs title="smart.fm" 
-               description="smart.fm gadget for mixi platform"
+               description="smart.fm launcher gadget"
                author_email="nov@matake.jp"
                thumbnail="http://matake.jp/gadgets/smartfm/images/thumbnail.png"
                screenshot="http://matake.jp/gadgets/smartfm/images/screenshot.png"
@@ -24,7 +24,7 @@
   </UserPref>
   <Content type="html" view="canvas, home, profile">
     <![CDATA[
-      <link href="http://matake.jp/gadgets/smartfm/stylesheets/mylists.css" media="screen" rel="stylesheet" type="text/css" />
+      <link type="text/css" rel="stylesheet" href="http://matake.jp/gadgets/smartfm/stylesheets/launcher.css" />
       <script type="text/javascript" src="http://matake.jp/gadgets/smartfm/javascripts/opensocial-jquery.min.js"></script>
       <script type="text/javascript" src="http://matake.jp/gadgets/smartfm/javascripts/start_swf.js"></script>
       <script type="text/javascript" src="http://matake.jp/gadgets/smartfm/javascripts/smart.js"></script>
