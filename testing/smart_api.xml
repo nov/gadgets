@@ -3,8 +3,8 @@
   <ModulePrefs title="smart.fm API"
                description="smart.fm gadget for OpenSocial containers"
                author_email="nov@matake.jp"
-               thumbnail="http://matake.jp/smartfm/images/thumbnail.png"
-               screenshot="http://matake.jp/smartfm/images/screenshot.png"
+               thumbnail="http://matake.jp/gadgets/smartfm/images/thumbnail.png"
+               screenshot="http://matake.jp/gadgets/smartfm/images/screenshot.png"
                singleton="true">
     <Require feature="opensocial-0.8" />
     <!-- doesn't work...
@@ -32,7 +32,7 @@
   <UserPref name="username" display_name="smart.fm username" datatype="string" required="true" />
   <Content type="html" view="profile,home">
     <![CDATA[
-      <link rel="stylesheet" type="text/css" href="http://matake.jp/testing_gadgets/stylesheets/base.css" />
+      <link rel="stylesheet" type="text/css" href="http://matake.jp/gadgets/testing/stylesheets/base.css" />
       <script type="text/javascript" src="http://blog.matake.jp/javascripts/jquery.js"></script>
       <div id="view_links"></div>
       <script type="text/javascript">
@@ -49,7 +49,7 @@
   </Content>
   <Content type="html" view="canvas,preview">
     <![CDATA[
-      <script type="text/javascript" src="http://matake.jp/testing_gadgets/javascripts/smart_api.js"></script>
+      <script type="text/javascript" src="http://matake.jp/gadgets/testing/javascripts/smart_api.js"></script>
       <script type="text/javascript">
         gadgets.util.registerOnLoadHandler(gadgets.window.adjustHeight);
         gadgets.util.registerOnLoadHandler(smart.api.sessions);

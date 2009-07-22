@@ -1,0 +1,10 @@
+.user .name {
+  padding-top: 1em;
+}
+.user .description {
+  margin-bottom: 4em;
+}
+.user .description img {
+  float: right;
+  margin: 0 0 10px 1em;
+}

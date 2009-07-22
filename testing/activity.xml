@@ -29,7 +29,7 @@
   </Content>
   <Content type="html" view="profile,home">
     <![CDATA[
-      <link rel="stylesheet" type="text/css" href="http://matake.jp/testing_gadgets/stylesheets/base.css" />
+      <link rel="stylesheet" type="text/css" href="http://matake.jp/gadgets/testing/stylesheets/base.css" />
       <div id="view_links"></div>
       <script type="text/javascript">
         var views = gadgets.views.getSupportedViews();
@@ -45,13 +45,13 @@
   </Content>
   <Content type="html" view="canvas,preview">
     <![CDATA[
-      <script type="text/javascript" src="http://matake.jp/testing_gadgets/javascripts/opt_params.js"></script>
-      <script type="text/javascript" src="http://matake.jp/testing_gadgets/javascripts/v0.8/idspec.js"></script>
-      <script type="text/javascript" src="http://matake.jp/testing_gadgets/javascripts/v0.9/idspec.js"></script>
-      <script type="text/javascript" src="http://matake.jp/testing_gadgets/javascripts/rest/idspec.js"></script>
-      <script type="text/javascript" src="http://matake.jp/testing_gadgets/javascripts/v0.8/activity.js"></script>
-      <script type="text/javascript" src="http://matake.jp/testing_gadgets/javascripts/v0.9/activity.js"></script>
-      <script type="text/javascript" src="http://matake.jp/testing_gadgets/javascripts/rest/activity.js"></script>
+      <script type="text/javascript" src="http://matake.jp/gadgets/testing/javascripts/opt_params.js"></script>
+      <script type="text/javascript" src="http://matake.jp/gadgets/testing/javascripts/v0.8/idspec.js"></script>
+      <script type="text/javascript" src="http://matake.jp/gadgets/testing/javascripts/v0.9/idspec.js"></script>
+      <script type="text/javascript" src="http://matake.jp/gadgets/testing/javascripts/rest/idspec.js"></script>
+      <script type="text/javascript" src="http://matake.jp/gadgets/testing/javascripts/v0.8/activity.js"></script>
+      <script type="text/javascript" src="http://matake.jp/gadgets/testing/javascripts/v0.9/activity.js"></script>
+      <script type="text/javascript" src="http://matake.jp/gadgets/testing/javascripts/rest/activity.js"></script>
       <script type="text/javascript">
         gadgets.util.registerOnLoadHandler(gadgets.window.adjustHeight);
       </script>

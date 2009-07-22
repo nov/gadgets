@@ -1,0 +1,28 @@
+.launch_button,
+.launch_button_disable {
+  float: left;
+  display: block;
+  width: 38px;
+  height: 38px;
+  margin: 3px 8px;
+  overflow: hidden;
+  text-decoration: none;
+}
+.launch_button {
+  background: url("http://smart.fm/images/sprites/app_buttons.gif") no-repeat;
+}
+.dictation_launcher {
+  background-position: 0 -100px;
+}
+.brainspeed_launcher {
+  background-position: 0 -299px;
+}
+.iknow_launcher:hover {
+  background-position: 0 -50px;
+}
+.dictation_launcher:hover {
+  background-position: 0 -150px;
+}
+.brainspeed_launcher:hover {
+  background-position: 0 -349px;
+}

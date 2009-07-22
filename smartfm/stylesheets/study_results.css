@@ -1,0 +1,15 @@
+#study_results {
+  height: 140px;
+  width: 276px;
+  float: right;
+  background: url("http://assets0.smart.fm/images/sprites/badge.png");
+}
+.study_result {
+  color: #fff;
+  font-size: 25px;
+  font-weight: bold;
+  width: 90px;
+  padding: 1px;
+  text-align: right;
+  float: left;
+}

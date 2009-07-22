@@ -1,0 +1,25 @@
+.list {
+  margin: 25px 0;
+}
+.list .title {
+  margin: 5px;
+}
+.list h3.title {
+  margin: 7px 0;
+  font-size: 100%;
+}
+.list .launchers {
+  margin-top: 3px;
+}
+.list .description {
+  padding: 10px;
+  border: 1px solid #b5d8df;
+  background: #eef9ff;
+}
+.list .launchers {
+  float: left;
+  width: 165px;
+}
+.canvas .list .launchers {
+  margin-top: 9px;
+}
