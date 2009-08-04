@@ -16,17 +16,17 @@ smart.lists = {
     });
   },
   display: function (list) {
-    var icon = $('<div class="icon" />').append(
+    list.square_icon = list.square_icon || 'http://smart.fm/images/icon_free_list.gif';
+/*    var icon = $('<div class="icon" />').append(
       $('<a target="_blank" />').attr('href', list.href).append(
-        $('<img width="60" height="60" />')
-        .attr('src', list.square_icon || 'http://smart.fm/images/icon_free_list.gif')
-        .append('alt', list.title)
+        $('<img width="60" height="60" />').attr('src', list.square_icon).append('alt', list.title)
       )
+    );*/
+    var icon = $('<div class="icon" />').append(
+      $('<a target="_blank" />').attr('href', list.href).append($('<img width="60" height="60" />').attr('src', list.square_icon))
     );
     var title = $('<div class="title" />').append(
-      $('<a target="_blank" />')
-      .attr('href', list.href)
-      .append(list.title)
+      $('<a target="_blank" />').attr('href', list.href).append(list.title)
     );
     $('<div class="list clearfix" />')
     .append(icon).append(title).append(smart.lists.launchers(list))

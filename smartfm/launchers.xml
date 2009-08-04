@@ -8,9 +8,7 @@
                singleton="true">
     <Require feature="tabs" />
     <Require feature="opensocial-0.8" />
-    <!--
-    <Require feature="setprefs" />
-    -->
+    <!-- Require feature="setprefs" /-->
     <Require feature="views" />
     <Require feature="dynamic-height" />
     <Optional feature="content-rewrite">
@@ -26,7 +24,7 @@
     <EnumValue value="15" />
     <EnumValue value="20" />
   </UserPref>
-  <Content type="html" view="canvas, home, profile">
+  <Content type="html" view="canvas,home,profile">
     <![CDATA[
       <link type="text/css" rel="stylesheet" href="http://matake.jp/gadgets/smartfm/stylesheets/base.css" />
       <link type="text/css" rel="stylesheet" href="http://matake.jp/gadgets/smartfm/stylesheets/lists.css" />
@@ -39,10 +37,10 @@
       <script type="text/javascript" src="http://matake.jp/gadgets/smartfm/javascripts/smart.study_results.js"></script>
     ]]>
   </Content>
-  <Content type="html" view="home, profile">
+  <Content type="html" view="home,profile">
     <![CDATA[
       <script type="text/javascript">
-        jQuery(function ($) {
+        $(function () {
           smart.init(function () {
             smart.study_results.load();
           });
@@ -75,7 +73,7 @@
   <Content type="html" view="canvas">
     <![CDATA[
       <script type="text/javascript">
-        jQuery(function ($) {
+        $(function () {
           smart.init(function () {
             smart.lists.load();
             smart.study_results.load();
@@ -84,7 +82,7 @@
       </script>
       <div id="content">
         <div id="header">
-          <ul class="menu clearfix">
+          <ul class="menu clearfix" style="display: none">
             <li><a class="share" href="#" onclick="smart.share('Study english!'); return false">share</a></li>
             <li><a class="pref" href="#" onclick="smart.pref.toggle(); return false">pref</a></li>
           </ul>
@@ -97,11 +95,11 @@
               <div class="field">
                 <label for="per_page">num of lists per page</label>
                 <select name="per_page" id="per_page">
-                  <option value="3">3</options>
-                  <option value="5">5</options>
-                  <option value="7">7</options>
-                  <option value="10">10</options>
-                  <option value="15">15</options>
+                  <option value="3">3</option>
+                  <option value="5">5</option>
+                  <option value="7">7</option>
+                  <option value="10">10</option>
+                  <option value="15">15</option>
                 </select>
               </div>
               <div class="field">

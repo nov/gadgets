@@ -16,6 +16,7 @@ ul, li {
   padding: 0;
 }
 .clearfix {
+  zoom: 1;
 }
 .clearfix:after {
   content: ".";
@@ -25,6 +26,7 @@ ul, li {
   line-height: 0;
   height: 0;
 }
+
 #content {
   margin: 17px 10px;
   font-size: 90%;
@@ -51,13 +53,16 @@ ul, li {
   margin-right: 10px;
   border: 1px solid #ccc;
 }
+.menu {
+  height: 15px;
+  margin-bottom: 10px;
+}
 .menu li {
   float: left;
   margin: 0 10px 0;
   padding: 0;
 }
 .menu a {
-  display: block;
   height: 24px;
   margin-bottom: 5px;
   padding-left: 30px;

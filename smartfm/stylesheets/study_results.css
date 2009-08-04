@@ -1,7 +1,7 @@
 #study_results {
   height: 140px;
   width: 276px;
-  background: url("http://assets0.smart.fm/images/sprites/badge.png") no-repeat;
+  background: url("http://matake.jp/gadgets/smartfm/images/badge.png") no-repeat;
 }
 #study_results.exclude_brainspeed {
   margin-left: 12px;
@@ -31,15 +31,42 @@
 }
 
 #ranking {
-  border: 1px solid #ddd;
+  border: 1px solid #fb3;
   -moz-border-radius: 3px;
   -webkit-border-radius: 3px;
 }
 #ranking dt {
+  color: #fff;
+  font-weight: bold;
+  text-align: center;
   padding: 6px;
-  background: #ddd;
+  background: #fb3;
 }
 #ranking dd {
   margin: 0;
-  padding: 4px 6px;
+  padding: 7px 10px 7px 35px;
+  height: 16px;
+}
+#ranking dd.even {
+  background-color: #feb;
+}
+#ranking dd.rank1,
+#ranking dd.rank2,
+#ranking dd.rank3 {
+  background-image: url("http://matake.jp/gadgets/smartfm/images/ranking.gif");
+  background-repeat: no-repeat;
+}
+#ranking dd.rank1 {
+  background-position: 4px 4px;
+}
+#ranking dd.rank2 {
+  background-position: 4px -29px;
+}
+#ranking dd.rank3 {
+  background-position: 4px -64px;
+}
+#ranking span.me,
+#ranking a.me {
+  color: red;
+  font-weight: bold;
 }
