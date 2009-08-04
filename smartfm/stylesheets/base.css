@@ -15,6 +15,8 @@ ul, li {
   margin: 0;
   padding: 0;
 }
+.clearfix {
+}
 .clearfix:after {
   content: ".";
   display: block;
@@ -24,13 +26,14 @@ ul, li {
   height: 0;
 }
 #content {
-  margin: 10px;
+  margin: 17px 10px;
   font-size: 90%;
 }
-#content.canvas {
-  margin: 10px 25px;
+#header {
+  margin-bottom: 10px;
 }
 #main {
+  clear: both;
   width: 600px;
   float: left;
 }
@@ -38,12 +41,43 @@ ul, li {
   width: 276px;
   float: right;
 }
-.powered_by {
+#footer {
   text-align: right;
   clear: both;
 }
+
 .icon {
   float: left;
   margin-right: 10px;
   border: 1px solid #ccc;
+}
+.menu li {
+  float: left;
+  margin: 0 10px 0;
+  padding: 0;
+}
+.menu a {
+  display: block;
+  height: 24px;
+  margin-bottom: 5px;
+  padding-left: 30px;
+}
+#pref {
+  padding: 10px 25px;
+  background: #ddd;
+  -moz-border-radius: 3px;
+  -webkit-border-radius: 3px;
+}
+#pref form {
+  margin: 0;
+}
+#pref form .field {
+  float: left;
+  margin-right: 20px;
+}
+.pref {
+  background: #fff url("http://matake.jp/gadgets/smartfm/images/pref.png") no-repeat;
+}
+.share {
+  background: #fff url("http://matake.jp/gadgets/smartfm/images/share.png") no-repeat;
 }

@@ -6,15 +6,18 @@ smart.lists = {
   },
   load: function () {
     $.getJSON(smart.lists.json(), null, function (lists) {
-      $.each(lists, function () {
-        smart.lists.display(this);
-      });
+      $('#lists').html('');
+      if (lists) {
+        $.each(lists, function () {
+          smart.lists.display(this);
+        });
+      }
       $(window).adjustHeight();
     });
   },
   display: function (list) {
     var icon = $('<div class="icon" />').append(
-      $('<a target="_blank" />').attr('href', smart.base_url +  'lists' + list.id).append(
+      $('<a target="_blank" />').attr('href', list.href).append(
         $('<img width="60" height="60" />')
         .attr('src', list.square_icon || 'http://smart.fm/images/icon_free_list.gif')
         .append('alt', list.title)
@@ -22,7 +25,7 @@ smart.lists = {
     );
     var title = $('<div class="title" />').append(
       $('<a target="_blank" />')
-      .attr('href', smart.base_url + '/lists/' + list.id)
+      .attr('href', list.href)
       .append(list.title)
     );
     $('<div class="list clearfix" />')
@@ -34,10 +37,20 @@ smart.lists = {
     var iknow      = '<div class="iknow_launcher launch_button_disable"></div>';
     var dictation  = '<div class="dictation_launcher launch_button_disable"></div>';
     var brainspeed = '<div class="brainspeed_launcher launch_button_disable"></div>';
-    if (list.iknow)      iknow      = smart.lists.launcher('iknow', list.id);
-    if (list.dictation)  dictation  = smart.lists.launcher('dictation', list.id);
-    if (list.brainspeed) brainspeed = smart.lists.launcher('brainspeed', list.id);
-    launchers.append(iknow).append(dictation).append(brainspeed);
+    var iknow_progress = '';
+    var dictation_progress = '';
+    if (list.iknow) {
+      iknow = smart.lists.launcher('iknow', list.id);
+      iknow_progress = $('<div class="progress" />').append($('<div class="completed" />').attr('style', 'width:' + list.iknow.progress/2 + 'px').append($('<div class="caption" />').append(list.iknow.progress + '%')));
+    }
+    if (list.dictation) {
+      dictation = smart.lists.launcher('dictation', list.id);
+      dictation_progress = $('<div class="progress" />').append($('<div class="completed" />').attr('style', 'width:' + list.dictation.progress/2 + 'px').append($('<div class="caption" />').append(list.dictation.progress + '%')));
+    }
+    if (list.brainspeed) {
+      brainspeed = smart.lists.launcher('brainspeed', list.id);
+    }
+    launchers.append(iknow).append(iknow_progress).append(dictation).append(dictation_progress).append(brainspeed);
     return launchers;
   },
   launcher: function (application, list_id) {

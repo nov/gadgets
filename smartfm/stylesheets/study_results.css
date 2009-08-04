@@ -1,8 +1,14 @@
 #study_results {
   height: 140px;
   width: 276px;
-  float: right;
-  background: url("http://assets0.smart.fm/images/sprites/badge.png");
+  background: url("http://assets0.smart.fm/images/sprites/badge.png") no-repeat;
+}
+#study_results.exclude_brainspeed {
+  margin-left: 12px;
+  width: 184px;
+}
+#study_results.exclude_brainspeed:hover {
+  cursor: pointer;
 }
 .study_result {
   color: #fff;
@@ -10,6 +16,30 @@
   font-weight: bold;
   width: 90px;
   padding: 1px;
-  text-align: right;
+  text-align: center;
   float: left;
+}
+.study_result li {
+  margin-top: 25px;
+}
+.study_result li.completed,
+.study_result li.best_score {
+  margin-top: 20px;
+}
+.study_result .caption {
+  font-size: 10px;
+}
+
+#ranking {
+  border: 1px solid #ddd;
+  -moz-border-radius: 3px;
+  -webkit-border-radius: 3px;
+}
+#ranking dt {
+  padding: 6px;
+  background: #ddd;
+}
+#ranking dd {
+  margin: 0;
+  padding: 4px 6px;
 }

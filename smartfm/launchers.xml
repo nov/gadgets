@@ -11,6 +11,7 @@
     <!--
     <Require feature="setprefs" />
     -->
+    <Require feature="views" />
     <Require feature="dynamic-height" />
     <Optional feature="content-rewrite">
       <Param name="include-tags"></Param>
@@ -36,6 +37,43 @@
       <script type="text/javascript" src="http://matake.jp/gadgets/smartfm/javascripts/smart.js"></script>
       <script type="text/javascript" src="http://matake.jp/gadgets/smartfm/javascripts/smart.lists.js"></script>
       <script type="text/javascript" src="http://matake.jp/gadgets/smartfm/javascripts/smart.study_results.js"></script>
+    ]]>
+  </Content>
+  <Content type="html" view="home, profile">
+    <![CDATA[
+      <script type="text/javascript">
+        jQuery(function ($) {
+          smart.init(function () {
+            smart.study_results.load();
+          });
+        });
+      </script>
+      <div id="study_results" class="exclude_brainspeed clearfix" onclick="gadgets.views.requestNavigateTo(gadgets.views.getSupportedViews().canvas);">
+        <ul class="iknow study_result">
+          <li class="studied">
+            <div class="score"></div>
+            <div class="caption">学習中</div>
+          </li>
+          <li class="completed">
+            <div class="score"></div>
+            <div class="caption">学習完了</div>
+          </li>
+        </ul>
+        <ul class="dictation study_result">
+          <li class="skill_level">
+            <div class="score"></div>
+            <div class="caption">スキルレベル</div>
+          </li>
+          <li class="completed">
+            <div class="score"></div>
+            <div class="caption">学習完了</div>
+          </li>
+        </ul>
+      </div>
+    ]]>
+  </Content>
+  <Content type="html" view="canvas">
+    <![CDATA[
       <script type="text/javascript">
         jQuery(function ($) {
           smart.init(function () {
@@ -45,37 +83,83 @@
         });
       </script>
       <div id="content">
-        <div id="pref" style="display:none">
-          <form action="#" onsubmit="smart.setpref(this); return false;">
-            <label for="username">smart.fm ユーザ名</label>
-            <input type="text" name="username" id="username" />
-            <input type="submit" value="設定" />
-          </form>
+        <div id="header">
+          <ul class="menu clearfix">
+            <li><a class="share" href="#" onclick="smart.share('Study english!'); return false">share</a></li>
+            <li><a class="pref" href="#" onclick="smart.pref.toggle(); return false">pref</a></li>
+          </ul>
+          <div id="pref" style="display:none">
+            <form action="#" onsubmit="smart.pref.set(this); return false;">
+              <div class="field">
+                <label for="username">smart.fm ユーザ名</label>
+                <input type="text" name="username" id="username" />
+              </div>
+              <div class="field">
+                <label for="per_page">num of lists per page</label>
+                <select name="per_page" id="per_page">
+                  <option value="3">3</options>
+                  <option value="5">5</options>
+                  <option value="7">7</options>
+                  <option value="10">10</options>
+                  <option value="15">15</options>
+                </select>
+              </div>
+              <div class="field">
+                <label for="ranking_by">Ranking by</label>
+                <select name="ranking_by" id="ranking_by">
+                  <optgroup label="iKnow!">
+                    <option value="iknow_studied">学習アイテム数</option>
+                    <option value="iknow_completed">学習完了アイテム数</option>
+                  </optgroup>
+                  <optgroup label="Dictation">
+                    <option value="dictation_skill_level">スキルレベル</option>
+                    <option value="dictation_completed">学習完了例文数</option>
+                  </optgroup>
+                </select>
+              </div>
+              <input type="submit" value="save" />
+            </form>
+          </div>
         </div>
         <div id="main">
           <div id="lists"></div>
         </div>
         <div id="sidebar">
-          <div id="messaging">
-            <a href="#" onclick="smart.share('Study english!'); return false">share</a>
-          </div>
           <div id="study_results" class="clearfix">
             <ul class="iknow study_result">
-              <li class="completed"></li>
-              <li class="studied"></li>
+              <li class="studied">
+                <div class="score"></div>
+                <div class="caption">学習中</div>
+              </li>
+              <li class="completed">
+                <div class="score"></div>
+                <div class="caption">学習完了</div>
+              </li>
             </ul>
             <ul class="dictation study_result">
-              <li class="completed"></li>
-              <li class="skill_level"></li>
+              <li class="skill_level">
+                <div class="score"></div>
+                <div class="caption">スキルレベル</div>
+              </li>
+              <li class="completed">
+                <div class="score"></div>
+                <div class="caption">学習完了</div>
+              </li>
             </ul>
             <ul class="brainspeed study_result">
-              <li class="best_speed"></li>
-              <li class="best_score"></li>
+              <li class="best_speed">
+                <div class="score"></div>
+                <div class="caption">ベストスピード</div>
+              </li>
+              <li class="best_score">
+                <div class="score"></div>
+                <div class="caption">ベストスコア</div>
+              </li>
             </ul>
           </div>
-          <div id="ranking"></div>
+          <dl id="ranking"></dl>
         </div>
-        <div class="powered_by">
+        <div id="footer">
           <a href="http://smart.fm" target="_blank">
             <img width="210" height="36" alt="powered by smart.fm API" src="http://developer.smart.fm/files/powered_by_smartfm_210x36_white.gif" />
           </a>
