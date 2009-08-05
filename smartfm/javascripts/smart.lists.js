@@ -17,11 +17,6 @@ smart.lists = {
   },
   display: function (list) {
     list.square_icon = list.square_icon || 'http://smart.fm/images/icon_free_list.gif';
-/*    var icon = $('<div class="icon" />').append(
-      $('<a target="_blank" />').attr('href', list.href).append(
-        $('<img width="60" height="60" />').attr('src', list.square_icon).append('alt', list.title)
-      )
-    );*/
     var icon = $('<div class="icon" />').append(
       $('<a target="_blank" />').attr('href', list.href).append($('<img width="60" height="60" />').attr('src', list.square_icon))
     );

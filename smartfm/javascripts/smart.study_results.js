@@ -6,12 +6,22 @@ smart.study_results = {
   },
   load: function () {
     $.getJSON(smart.study_results.json("iknow"), null, function (json) {
-      if (smart.owner.isViewer) smart.study_results.record.iknow(json.total_summary);
+      if (smart.owner.isViewer) {
+        smart.study_results.record.iknow(json.total_summary);
+        smart.study_results.record.last_studied_at(json.study_results[0]);
+        smart.study_results.display.iknow(json.total_summary);
+      }
       smart.study_results.display.iknow(json.total_summary);
-    });
-    $.getJSON(smart.study_results.json("dictation"), null, function (json) {
-      if (smart.owner.isViewer) smart.study_results.record.dictation(json.total_summary);
-      smart.study_results.display.dictation(json.total_summary);
+      $.getJSON(smart.study_results.json("dictation"), null, function (json) {
+        if (smart.owner.isViewer) {
+          smart.study_results.record.dictation(json.total_summary);
+          smart.study_results.record.last_studied_at(json.study_results[0]);
+          smart.study_results.display.dictation(json.total_summary);
+        }
+        smart.study_results.display.dictation(json.total_summary);
+        smart.activities.check_last_studied_at();
+        if (gadgets.util.getUrlParameters().view != 'canvas') $(window).adjustHeight(); /* somehow, this is necessary only for IEs */
+      });
     });
     if (gadgets.util.getUrlParameters().view == 'canvas') {
       $.getJSON(smart.study_results.json("brainspeed"), null, function (json) {
@@ -53,26 +63,32 @@ smart.study_results = {
     brainspeed: function (total) {
       $.postData("/appdata/@viewer/@self", {brainspeed_best_speed: total.best_speed});
       $.postData("/appdata/@viewer/@self", {brainspeed_best_score: total.best_score});
+    },
+    last_studied_at: function (result, callback) {
+      if (!result) return;
+      var last_studied_at = Date.parse(result.date.replace(/-/g, '/'));
+      if (!smart.last_studied_at || smart.last_studied_at < last_studied_at) {
+        smart.last_studied_at = last_studied_at;
+        $.postData("/appdata/@viewer/@self", {last_studied_at: last_studied_at});
+      }
     }
   },
   ranking: function () {
     var field = smart.ranking_by;
     $.getData("/appdata/@owner/@friends", {fields: field + ",username"}, function (friends_data) {
       $.getData("/appdata/@owner/@self", {fields: field + ",username"}, function (owner_data) {
-        console.info(friends_data);
-        console.info(owner_data);
         var data = [];
-        $.each(friends_data, function (id, pref) {
-          $.each(pref, function (key, value) {
+        $.each(friends_data, function (id, friend) {
+          $.each(friend, function (key, value) {
             if (key != "username") {
-              data.push({id: id, username: pref.username, value: value});
+              data.push({id: id, username: friend.username, value: value});
             }
           });
         });
-        $.each(owner_data, function (id, pref) {
-          $.each(pref, function (key, value) {
+        $.each(owner_data, function (id, owner) {
+          $.each(owner, function (key, value) {
             if (key != "username") {
-              data.push({id: id, username: pref.username, value: value, isViewer: smart.owner.isViewer});
+              data.push({id: id, username: owner.username, value: value, isViewer: smart.owner.isViewer});
             }
           });
         });
@@ -104,12 +120,12 @@ smart.study_results = {
           } else {
             klass += " odd";
           }
-          var link = $('<a target="_top" />').attr('href', 'http://platform001.mixi.jp/run_appli.pl?id=4424&&owner_id=' + data[i].id);
+          var link = $('<a target="_top" />').attr('href', smart.container.canvas_url(data[i].id));
           if (data[i].id == smart.viewer.id) {
             if (data[i].isViewer) {
               link = $('<span class="me" />');
             } else {
-              link = $('<a target="_top" class="me" />').attr('href', 'http://platform001.mixi.jp/run_appli.pl?id=4424&&owner_id=' + data[i].id);
+              link = $('<a target="_top" class="me" />').attr('href', smart.container.canvas_url(data[i].id));
             }
           }
           $('<dd class="' + klass + '" />')

@@ -6,9 +6,11 @@
                thumbnail="http://matake.jp/gadgets/smartfm/images/thumbnail.png"
                screenshot="http://matake.jp/gadgets/smartfm/images/screenshot.png"
                singleton="true">
-    <Require feature="tabs" />
     <Require feature="opensocial-0.8" />
-    <!-- Require feature="setprefs" /-->
+    <!-- 
+      Unfortunately, setprefs doesn't work on mixi, though gadgets.util.hasFeature("setprefs") returns true...
+      <Require feature="setprefs" />
+    -->
     <Require feature="views" />
     <Require feature="dynamic-height" />
     <Optional feature="content-rewrite">
@@ -16,6 +18,7 @@
     </Optional>
     <Icon>http://smart.fm/favicon.ico</Icon>
   </ModulePrefs>
+  <!--
   <UserPref name="username" display_name="Your smart.fm username" datatype="string" required="true" />
   <UserPref name="per_page" display_name="The number of lists" datatype="enum" default_value="5" required="true">
     <EnumValue value="3" />
@@ -24,6 +27,8 @@
     <EnumValue value="15" />
     <EnumValue value="20" />
   </UserPref>
+  <UserPref name="username" datatype="hidden" default_value="iknow_studied" />
+  -->
   <Content type="html" view="canvas,home,profile">
     <![CDATA[
       <link type="text/css" rel="stylesheet" href="http://matake.jp/gadgets/smartfm/stylesheets/base.css" />
@@ -33,8 +38,11 @@
       <script type="text/javascript" src="http://matake.jp/gadgets/smartfm/javascripts/opensocial-jquery.min.js"></script>
       <script type="text/javascript" src="http://matake.jp/gadgets/smartfm/javascripts/start_swf.js"></script>
       <script type="text/javascript" src="http://matake.jp/gadgets/smartfm/javascripts/smart.js"></script>
+      <script type="text/javascript" src="http://matake.jp/gadgets/smartfm/javascripts/smart.prefs.js"></script>
+      <script type="text/javascript" src="http://matake.jp/gadgets/smartfm/javascripts/smart.messages.js"></script>
       <script type="text/javascript" src="http://matake.jp/gadgets/smartfm/javascripts/smart.lists.js"></script>
       <script type="text/javascript" src="http://matake.jp/gadgets/smartfm/javascripts/smart.study_results.js"></script>
+      <script type="text/javascript" src="http://matake.jp/gadgets/smartfm/javascripts/smart.activities.js"></script>
     ]]>
   </Content>
   <Content type="html" view="home,profile">
@@ -43,31 +51,10 @@
         $(function () {
           smart.init(function () {
             smart.study_results.load();
+            $(window).adjustHeight();
           });
         });
       </script>
-      <div id="study_results" class="exclude_brainspeed clearfix" onclick="gadgets.views.requestNavigateTo(gadgets.views.getSupportedViews().canvas);">
-        <ul class="iknow study_result">
-          <li class="studied">
-            <div class="score"></div>
-            <div class="caption">学習中</div>
-          </li>
-          <li class="completed">
-            <div class="score"></div>
-            <div class="caption">学習完了</div>
-          </li>
-        </ul>
-        <ul class="dictation study_result">
-          <li class="skill_level">
-            <div class="score"></div>
-            <div class="caption">スキルレベル</div>
-          </li>
-          <li class="completed">
-            <div class="score"></div>
-            <div class="caption">学習完了</div>
-          </li>
-        </ul>
-      </div>
     ]]>
   </Content>
   <Content type="html" view="canvas">
@@ -80,20 +67,34 @@
           });
         });
       </script>
+    ]]>
+  </Content>
+  <Content type="html" view="home,profile">
+    <![CDATA[
+      <div id="content" class="small">
+        <div id="study_results" class="clearfix" onclick="gadgets.views.requestNavigateTo(gadgets.views.getSupportedViews().canvas);">
+    ]]>
+  </Content>
+  <Content type="html" view="canvas">
+    <![CDATA[
       <div id="content">
         <div id="header">
-          <ul class="menu clearfix" style="display: none">
-            <li><a class="share" href="#" onclick="smart.share('Study english!'); return false">share</a></li>
-            <li><a class="pref" href="#" onclick="smart.pref.toggle(); return false">pref</a></li>
+          <ul class="viewer_menu clearfix" style="display: none">
+            <li><a class="high_five" href="#" onclick="smart.messages.high_five(); return false"><span>high five!</span></a></li>
+            <li><a class="poke" href="#" onclick="smart.messages.poke(); return false"><span>つっつく</span></a></li>
+          </ul>
+          <ul class="owner_menu clearfix" style="display: none">
+            <li><a class="share" href="#" onclick="smart.messages.share('Study english!'); return false"><span>友達を招待</span></a></li>
+            <li><a class="pref" href="#" onclick="smart.prefs.toggle(); return false"><span>設定変更</span></a></li>
           </ul>
           <div id="pref" style="display:none">
-            <form action="#" onsubmit="smart.pref.set(this); return false;">
+            <form action="#" onsubmit="smart.prefs.set(this); return false;">
               <div class="field">
-                <label for="username">smart.fm ユーザ名</label>
+                <label for="username">smart.fm username</label>
                 <input type="text" name="username" id="username" />
               </div>
               <div class="field">
-                <label for="per_page">num of lists per page</label>
+                <label for="per_page">The number of lists</label>
                 <select name="per_page" id="per_page">
                   <option value="3">3</option>
                   <option value="5">5</option>
@@ -124,37 +125,55 @@
         </div>
         <div id="sidebar">
           <div id="study_results" class="clearfix">
-            <ul class="iknow study_result">
-              <li class="studied">
-                <div class="score"></div>
-                <div class="caption">学習中</div>
-              </li>
-              <li class="completed">
-                <div class="score"></div>
-                <div class="caption">学習完了</div>
-              </li>
-            </ul>
-            <ul class="dictation study_result">
-              <li class="skill_level">
-                <div class="score"></div>
-                <div class="caption">スキルレベル</div>
-              </li>
-              <li class="completed">
-                <div class="score"></div>
-                <div class="caption">学習完了</div>
-              </li>
-            </ul>
-            <ul class="brainspeed study_result">
-              <li class="best_speed">
-                <div class="score"></div>
-                <div class="caption">ベストスピード</div>
-              </li>
-              <li class="best_score">
-                <div class="score"></div>
-                <div class="caption">ベストスコア</div>
-              </li>
-            </ul>
-          </div>
+    ]]>
+  </Content>
+  <Content type="html" view="canvas,home,profile">
+    <![CDATA[
+      <ul class="iknow study_result">
+        <li class="studied">
+          <div class="score"></div>
+          <div class="caption">学習中</div>
+        </li>
+        <li class="completed">
+          <div class="score"></div>
+          <div class="caption">学習完了</div>
+        </li>
+      </ul>
+      <ul class="dictation study_result">
+        <li class="skill_level">
+          <div class="score"></div>
+          <div class="caption">スキルレベル</div>
+        </li>
+        <li class="completed">
+          <div class="score"></div>
+          <div class="caption">学習完了</div>
+        </li>
+      </ul>
+    ]]>
+  </Content>
+  <Content type="html" view="canvas">
+    <![CDATA[
+      <ul class="brainspeed study_result">
+        <li class="best_speed">
+          <div class="score"></div>
+          <div class="caption">ベストスピード</div>
+        </li>
+        <li class="best_score">
+          <div class="score"></div>
+          <div class="caption">ベストスコア</div>
+        </li>
+      </ul>
+    ]]>
+  </Content>
+  <Content type="html" view="home,profile">
+    <![CDATA[
+        </div>
+      </div>
+    ]]>
+  </Content>
+  <Content type="html" view="canvas">
+    <![CDATA[
+            </div>
           <dl id="ranking"></dl>
         </div>
         <div id="footer">

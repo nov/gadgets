@@ -28,8 +28,12 @@ ul, li {
 }
 
 #content {
-  margin: 17px 10px;
+  margin: 17px 20px;
   font-size: 90%;
+}
+#content.small {
+  text-align: center;
+  margin: 10px 0;
 }
 #header {
   margin-bottom: 10px;
@@ -53,23 +57,31 @@ ul, li {
   margin-right: 10px;
   border: 1px solid #ccc;
 }
-.menu {
-  height: 15px;
+.owner_menu,
+.viewer_menu {
   margin-bottom: 10px;
 }
-.menu li {
+.owner_menu li,
+.viewer_menu li {
   float: left;
   margin: 0 10px 0;
   padding: 0;
 }
-.menu a {
+.owner_menu a,
+.viewer_menu a {
+  display: block;
+  width: 110px;
   height: 24px;
   margin-bottom: 5px;
   padding-left: 30px;
 }
+.owner_menu a span,
+.viewer_menu a span {
+  line-height: 25px;
+}
 #pref {
   padding: 10px 25px;
-  background: #ddd;
+  background: #eee;
   -moz-border-radius: 3px;
   -webkit-border-radius: 3px;
 }
@@ -85,4 +97,10 @@ ul, li {
 }
 .share {
   background: #fff url("http://matake.jp/gadgets/smartfm/images/share.png") no-repeat;
+}
+.high_five {
+  background: #fff url("http://matake.jp/gadgets/smartfm/images/high_five.png") no-repeat;
+}
+.poke {
+  background: #fff url("http://matake.jp/gadgets/smartfm/images/poke.png") no-repeat;
 }

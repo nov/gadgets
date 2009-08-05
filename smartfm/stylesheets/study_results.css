@@ -3,11 +3,11 @@
   width: 276px;
   background: url("http://matake.jp/gadgets/smartfm/images/badge.png") no-repeat;
 }
-#study_results.exclude_brainspeed {
-  margin-left: 12px;
+.small #study_results {
+  margin: 0 auto;
   width: 184px;
 }
-#study_results.exclude_brainspeed:hover {
+.small #study_results:hover {
   cursor: pointer;
 }
 .study_result {
@@ -31,7 +31,7 @@
 }
 
 #ranking {
-  border: 1px solid #fb3;
+  border: 1px solid #f90;
   -moz-border-radius: 3px;
   -webkit-border-radius: 3px;
 }
@@ -40,7 +40,7 @@
   font-weight: bold;
   text-align: center;
   padding: 6px;
-  background: #fb3;
+  background: #f90;
 }
 #ranking dd {
   margin: 0;
